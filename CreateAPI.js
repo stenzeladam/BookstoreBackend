@@ -3,6 +3,11 @@ const express = require('express'); // Importing Express.js framework
 const { createPool } = require('mysql2'); // Destructuring createPool method from mysql2 module. Importing mqsql didn't work.
 const app = express(); 
 app.use(express.json()); // Middleware to parse JSON requests
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 const port = process.env.PORT || 3000; 
 app.listen(port, () => {
@@ -14,7 +19,7 @@ const pool = createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME, // Specify the database name
+    database: process.env.DB_NAME,
     connectionLimit: 10
 });
 
